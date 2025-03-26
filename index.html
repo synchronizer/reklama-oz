@@ -149,6 +149,7 @@
       height: var(--button-height);
       align-items: stretch;
       font-size: var(--button-font-size);
+      isolation: isolate;
     }
 
     .radiobutton__item {
@@ -164,8 +165,9 @@
     .radiobutton__input {
       position: absolute;
       inset: 0;
-      opacity: 0;
+      opacity: 0.1;
       cursor: pointer;
+      z-index: 2;
     }
 
     .radiobutton__item:first-child {
@@ -194,6 +196,7 @@
       background-color: var(--button-bg);
       border-radius: var(--button-border-radius);
       padding-inline: var(--button-padding-inline);
+      isolation: isolate;
     }
 
     .checkbutton:has(.checkbutton__input:checked) {
@@ -204,7 +207,8 @@
     .checkbutton__input {
       position: absolute;
       inset: 0;
-      opacity: 0;
+      opacity: 0.1;
+      z-index: 2;
     }
 
     #city {
