@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex">
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Реклама на щитах у подъездов</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+  <style id="jsbin-css">
+    :root {
+      --button-bg: #d5d8dc;
+      --button-checked-bg: #3A3F46;
+      --button-padding-inline: .75rem;
+      --button-font-size: .9rem;
+      --light-gray-bg: #f1f2f3;
+      --button-height: 2.5rem;
+      --button-border-radius: .5rem;
+      --price-color: #00B277;
+      --price-list__item-header-bg: var(--button-checked-bg);
+    }
+
+    section {
+      margin-top: 4rem;
+    }
+
+    * {
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    html {
+      /* color-scheme: dark; */
+      font-family: "Montserrat", sans-serif;
+      font-optical-sizing: auto;
+      font-style: normal;
+      line-height: 1.5;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      line-height: 1.2;
+      text-wrap: balance;
+    }
+
+    h2 {
+      margin-bottom: 1em;
+    }
+
+    .contacts {
+      display: flex;
+      column-gap: 2rem;
+      row-gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .contacts__item {
+      flex-shrink: 0;
+    }
+
+    a:any-link {
+      color: #286fff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      width: min(64rem, 100vw - 2rem);
+      margin-inline: auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 2rem;
+      position: relative;
+    }
+
+    @media (max-width: 66rem) {
+      h1 {
+        font-size: 2rem;
+        text-align: center;
+      }
+
+      .contacts {
+        justify-content: center;
+      }
+
+      main {
+        width: min(36rem, 100vw - 2rem);
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero__left {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      /* background-color: #ccc; */
+    }
+
+    .hero__right {
+      /* background-color: #ccc; */
+      position: relative;
+    }
+
+    .board {
+      height: 100%;
+      display: block;
+      margin-inline: auto;
+      object-fit: contain;
+    }
+
+
+    .calc {
+      background-color: var(--light-gray-bg);
+      padding: 1.5rem;
+      border-radius: 1.5rem;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .calc__select-group {
+      flex-grow: 1;
+    }
+
+    .calc__select-group-title {
+      margin-bottom: 0.5rem;
+    }
+
+
+
+    .radiobutton {
+      display: flex;
+      height: var(--button-height);
+      align-items: stretch;
+      font-size: var(--button-font-size);
+    }
+
+    .radiobutton__item {
+      flex: 1 1 auto;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--button-bg);
+      padding-inline: var(--button-padding-inline);
+    }
+
+    .radiobutton__input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .radiobutton__item:first-child {
+      border-radius: var(--button-border-radius) 0 0 var(--button-border-radius);
+    }
+
+    .radiobutton__item:last-child {
+      border-radius: 0 var(--button-border-radius) var(--button-border-radius) 0;
+    }
+
+    .radiobutton__item:has(.radiobutton__input:checked) {
+      background-color: #3A3F46;
+      color: canvas;
+    }
+
+
+
+    .checkbutton {
+      position: relative;
+      height: var(--button-height);
+      font-size: .9rem;
+      display: flex;
+      width: max-content;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--button-bg);
+      border-radius: var(--button-border-radius);
+      padding-inline: var(--button-padding-inline);
+    }
+
+    .checkbutton:has(.checkbutton__input:checked) {
+      background-color: var(--button-checked-bg);
+      color: canvas;
+    }
+
+    .checkbutton__input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+    }
+
+    #city {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .calc__result {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+
+    #price:not(:empty):after {
+      content: ' ₽';
+    }
+
+    #entrances:not(:empty):after {
+      content: ' подъездов';
+    }
+
+    #price::after,
+    #entrances::after {
+      font-weight: normal;
+      font-size: 1rem;
+    }
+
+    .section_gray {
+      padding-block: 3rem;
+      background-color: var(--light-gray-bg);
+      margin-inline: calc((100% - 100vw) / 2);
+      padding-inline: calc((100vw - 100%) / 2);
+    }
+
+    .price-list {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media (max-width: 66rem) {
+      .price-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 32rem) {
+      .price-list {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
+
+    .price-list__item {
+      --__border-radius: 1rem;
+      --__padding: .75rem 1rem;
+      background-color: canvas;
+      border-radius: var(--__border-radius);
+    }
+
+    .price-list__item-header {
+      background-color: var(--price-list__item-header-bg);
+      border-radius: var(--__border-radius) var(--__border-radius) 0 0;
+      color: canvas;
+      text-align: center;
+      padding: var(--__padding);
+    }
+
+
+    .price-list__item-content {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: .5rem;
+      font-size: 0.9em;
+      padding: var(--__padding);
+      text-align-last: left;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <section class="hero">
+      <div class="hero__left">
+        <h1 class="supertitle">Реклама у подъездов<br>г. о. Орехово-зуево</h1>
+        <div class="contacts">
+          <a href="tel:+79060735131" class="contacts__item">+7 906 073-51-31</a>
+          <a href="tel:+79060735131" class="contacts__item">synchronizer@yandex.ru</a>
+        </div>
+        <div class="calc">
+
+
+
+          <div class="calc__select-group">
+            <div class="calc__select-group-title">
+              Размер объявления
+            </div>
+            <div class="calc__select-group-content">
+              <div class="radiobutton" id="size" name="size">
+                <div class="radiobutton__item">
+                  <input type="radio" class="radiobutton__input" name="size" value="a3">
+                  <div class="radiobutton__label">A3</div>
+                </div>
+                <div class="radiobutton__item">
+                  <input type="radio" class="radiobutton__input" name="size" value="a4" checked>
+                  <div class="radiobutton__label">A4</div>
+                </div>
+                <div class="radiobutton__item">
+                  <input type="radio" class="radiobutton__input" name="size" value="a5">
+                  <div class="radiobutton__label">A5</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="calc__select-group">
+            <div class="calc__select-group-title">
+              Срок размещения
+            </div>
+            <div class="calc__select-group-content">
+              <div class="radiobutton" id="time" name="time">
+                <div class="radiobutton__item">
+                  <input type="radio" class="radiobutton__input" name="time" value="few_weeks">
+                  <div class="radiobutton__label">15 дней</div>
+                </div>
+                <div class="radiobutton__item">
+                  <input type="radio" class="radiobutton__input" name="time" value="month" checked>
+                  <div class="radiobutton__label">1 месяц</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="calc__select-group">
+            <div class="calc__select-group-title">
+              Населённый пункт
+            </div>
+            <div class="calc__select-group-content">
+              <div id="city">
+
+                <div class="checkbutton">
+                  <input type="checkbox" class="checkbutton__input" name="likino_dulevo" value="likino_dulevo" checked>
+                  <label class="checkbutton__label" for="likino_dulevo">Ликино-Дулёво</label>
+                </div>
+
+
+                <div class="checkbutton">
+                  <input type="checkbox" class="checkbutton__input" name="kurovskoe" value="kurovskoe">
+                  <label class="checkbutton__label" for="kurovskoe">Куровское</label>
+                </div>
+
+
+                <div class="checkbutton">
+                  <input type="checkbox" class="checkbutton__input" name="drezna" value="drezna">
+                  <label class="checkbutton__label" for="drezna">Дрезна</label>
+                </div>
+
+
+                <div class="checkbutton">
+                  <input type="checkbox" class="checkbutton__input" name="davidovo" value="davidovo">
+                  <label class="checkbutton__label" for="davidovo">Давыдово</label>
+                </div>
+
+                <div class="checkbutton">
+                  <input type="checkbox" class="checkbutton__input" name="avsunino" value="avsunino">
+                  <label class="checkbutton__label" for="avsunino">Авсюнино</label>
+                </div>
+
+                <div class="checkbutton">
+                  <input type="checkbox" class="checkbutton__input" name="gubino" value="gubino">
+                  <label class="checkbutton__label" for="gubino">Губино</label>
+                </div>
+
+                <div class="checkbutton">
+                  <input type="checkbox" class="checkbutton__input" name="novinka" value="novinka">
+                  <label class="checkbutton__label" for="novinka">Новинка</label>
+                </div>
+
+                <div class="checkbutton">
+                  <input type="checkbox" class="checkbutton__input" name="kabanovo" value="kabanovo">
+                  <label class="checkbutton__label" for="kabanovo">Кабаново</label>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="calc__result">
+            <div id="price"></div>
+            <div id="entrances"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hero__right">
+        <img src="https://s.iimg.su/s/21/uUblQHpYLh1YcYdjD5tLZr1TVNwBXfxNlz1iuFwe.png" alt="" class="board">
+      </div>
+    </section>
+    <section class="section_gray">
+      <h2>Цены</h2>
+      <div class="price-list">
+        <div class="price-list__item">
+          <div class="price-list__item-header">
+            <h3 class="price-list__item-title">Ликино-Дулёво</h3>
+            <div class="price-list__item-sutitle">440 подъездов</div>
+          </div>
+          <table class="price-list__item-content">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">15 дней</th>
+                <th scope="col">Месяц</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">А3</th>
+                <td>26 600 ₽</td>
+                <td>38 000 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А4</th>
+                <td>13 300 ₽</td>
+                <td>19 000 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А5</th>
+                <td>7770 ₽</td>
+                <td>11 100 ₽</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+        <div class="price-list__item">
+          <div class="price-list__item-header">
+            <h3 class="price-list__item-title">Куровское</h3>
+            <div class="price-list__item-sutitle">290 подъездов</div>
+          </div>
+          <table class="price-list__item-content">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">15 дней</th>
+                <th scope="col">Месяц</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">А3</th>
+                <td>18 650 ₽</td>
+                <td>26 640 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А4</th>
+                <td>9330 ₽</td>
+                <td>13 320 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А5</th>
+                <td>5440 ₽</td>
+                <td>7770 ₽</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+        <div class="price-list__item">
+          <div class="price-list__item-header">
+            <h3 class="price-list__item-title">Дрезна</h3>
+            <div class="price-list__item-sutitle">200 подъездов</div>
+          </div>
+          <table class="price-list__item-content">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">15 дней</th>
+                <th scope="col">Месяц</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">А3</th>
+                <td>11 600 ₽</td>
+                <td>16 650 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А4</th>
+                <td>5800 ₽</td>
+                <td>8280 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А5</th>
+                <td>3390 ₽</td>
+                <td>4830 ₽</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+        <div class="price-list__item">
+          <div class="price-list__item-header">
+            <h3 class="price-list__item-title">Давыдово</h3>
+            <div class="price-list__item-sutitle">130 подъездов</div>
+          </div>
+          <table class="price-list__item-content">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">15 дней</th>
+                <th scope="col">Месяц</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">А3</th>
+                <td>6300 ₽</td>
+                <td>9000 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А4</th>
+                <td>3135 ₽</td>
+                <td>5400 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А5</th>
+                <td>1840 ₽</td>
+                <td>2630 ₽</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+        <div class="price-list__item">
+          <div class="price-list__item-header">
+            <h3 class="price-list__item-title">Авсюнино</h3>
+            <div class="price-list__item-sutitle">105 подъездов</div>
+          </div>
+          <table class="price-list__item-content">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">15 дней</th>
+                <th scope="col">Месяц</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">А3</th>
+                <td>5300 ₽</td>
+                <td>7560 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А4</th>
+                <td>2650 ₽</td>
+                <td>3780 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А5</th>
+                <td>1550 ₽</td>
+                <td>2210 ₽</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+        <div class="price-list__item">
+          <div class="price-list__item-header">
+            <h3 class="price-list__item-title">Губино</h3>
+            <div class="price-list__item-sutitle">110 подъездов</div>
+          </div>
+          <table class="price-list__item-content">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">15 дней</th>
+                <th scope="col">Месяц</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">А3</th>
+                <td>5040 ₽</td>
+                <td>7200 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А4</th>
+                <td>2520 ₽</td>
+                <td>3600 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А5</th>
+                <td>1470 ₽</td>
+                <td>2100 ₽</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+        <div class="price-list__item">
+          <div class="price-list__item-header">
+            <h3 class="price-list__item-title">Новинка</h3>
+            <div class="price-list__item-sutitle">40 подъездов</div>
+          </div>
+          <table class="price-list__item-content">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">15 дней</th>
+                <th scope="col">Месяц</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">А3</th>
+                <td>2520 ₽</td>
+                <td>3600 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А4</th>
+                <td>1260 ₽</td>
+                <td>1800 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А5</th>
+                <td>740 ₽</td>
+                <td>1050 ₽</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+        <div class="price-list__item">
+          <div class="price-list__item-header">
+            <h3 class="price-list__item-title">Кабаново</h3>
+            <div class="price-list__item-sutitle">45 подъездов</div>
+          </div>
+          <table class="price-list__item-content">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">15 дней</th>
+                <th scope="col">Месяц</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">А3</th>
+                <td>2270 ₽</td>
+                <td>3240 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А4</th>
+                <td>1140 ₽</td>
+                <td>1620 ₽</td>
+              </tr>
+              <tr>
+                <th scope="row">А5</th>
+                <td>670 ₽</td>
+                <td>950 ₽</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+
+
+
+  </main>
+
+  <script>
+    const priceList = {
+      likino_dulevo: {
+        entrances: 440,
+        a3: {
+          few_weeks: 26600,
+          month: 38000,
+        },
+        a4: {
+          few_weeks: 13300,
+          month: 19000,
+        },
+        a5: {
+          few_weeks: 7770,
+          month: 11100,
+        },
+      },
+      kurovskoe: {
+        entrances: 290,
+        a3: {
+          few_weeks: 18650,
+          month: 26640,
+        },
+        a4: {
+          few_weeks: 9330,
+          month: 13320,
+        },
+        a5: {
+          few_weeks: 5440,
+          month: 7770,
+        },
+      },
+      drezna: {
+        entrances: 200,
+        a3: {
+          few_weeks: 11600,
+          month: 16650,
+        },
+        a4: {
+          few_weeks: 5800,
+          month: 8280,
+        },
+        a5: {
+          few_weeks: 3390,
+          month: 4830,
+        },
+      },
+      davidovo: {
+        entrances: 130,
+        a3: {
+          few_weeks: 6300,
+          month: 9000,
+        },
+        a4: {
+          few_weeks: 3150,
+          month: 4500,
+        },
+        a5: {
+          few_weeks: 1840,
+          month: 2630,
+        },
+      },
+      avsunino: {
+        entrances: 105,
+        a3: {
+          few_weeks: 5300,
+          month: 7560,
+        },
+        a4: {
+          few_weeks: 2650,
+          month: 3780,
+        },
+        a5: {
+          few_weeks: 1550,
+          month: 2210,
+        },
+      },
+      gubino: {
+        entrances: 110,
+        a3: {
+          few_weeks: 5040,
+          month: 7200,
+        },
+        a4: {
+          few_weeks: 2520,
+          month: 3600,
+        },
+        a5: {
+          few_weeks: 1470,
+          month: 2100,
+        },
+      },
+      novinka: {
+        entrances: 40,
+        a3: {
+          few_weeks: 2520,
+          month: 3600,
+        },
+        a4: {
+          few_weeks: 1260,
+          month: 1800,
+        },
+        a5: {
+          few_weeks: 740,
+          month: 1050,
+        },
+      },
+      kabanovo: {
+        entrances: 45,
+        a3: {
+          few_weeks: 2270,
+          month: 3240,
+        },
+        a4: {
+          few_weeks: 1140,
+          month: 1620,
+        },
+        a5: {
+          few_weeks: 670,
+          month: 950,
+        },
+      },
+    }
+
+    Array.from(document.querySelectorAll('.radiobutton')).forEach(radiobutton => {
+
+      radiobutton.input = () => {
+
+      }
+
+      Array.from(radiobutton.querySelectorAll('.radiobutton__item')).forEach(radiobutton__item => {
+        const radiobutton__input = radiobutton__item.querySelector('.radiobutton__input');
+
+        if (radiobutton__input.checked) {
+          radiobutton.value = radiobutton__input.value;
+          radiobutton.input();
+        }
+
+        radiobutton__input.addEventListener('input', () => {
+          radiobutton.value = radiobutton__input.value;
+          radiobutton.input();
+        })
+
+      })
+    })
+
+    const smoothIncreasePrice = (node, value, time = 500, steps = 20) => {
+      const oldValue = node.innerText.replace(' ', '').replace(',', '.') * 1,
+        step = (value - oldValue) / steps;
+
+      let currentStep = 0;
+      const interval = setInterval(() => {
+        currentStep++;
+        if (currentStep > steps) {
+          clearInterval(interval);
+          return;
+        }
+        node.innerHTML = Math.round((node.innerText.replace(' ', '').replace(',', '.') * 1 + step))
+
+      }, time / steps)
+
+
+
+    }
+
+
+    const size = document.querySelector('#size'),
+      time = document.querySelector('#time'),
+      cityItems = Array.from(document.querySelectorAll('#city .checkbutton__input'));
+
+
+
+
+    const calculate = () => {
+      let price = 0, entrances = 0;
+
+      cityItems.forEach(city__input => {
+        if (!city__input.checked) return
+        price += priceList[city__input.value][size.value][time.value];
+        entrances += priceList[city__input.value].entrances;
+      })
+
+      smoothIncreasePrice(document.querySelector('#price'), price)
+      smoothIncreasePrice(document.querySelector('#entrances'), entrances)
+
+    }
+
+    calculate()
+
+    size.addEventListener('input', calculate);
+    time.addEventListener('input', calculate);
+    cityItems.forEach(city__input => {
+      city__input.addEventListener('input', calculate);
+    })
+
+
+
+
+  </script>
+</body>
+
+</html>
